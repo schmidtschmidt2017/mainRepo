@@ -1,0 +1,84 @@
+{
+  "dummy": 1,
+  "wrapperUIPages": [
+    {
+      "question": "Was ist ihre Lieblingsentwicklungssprache?",
+      "buttonTextNextArray": [
+        {
+          "buttonText": "C",
+          "nextButton": 1
+        },
+        {
+          "buttonText": "C\u002B\u002B",
+          "nextButton": 2
+        },
+        {
+          "buttonText": "C#",
+          "nextButton": 3
+        },
+        {
+          "buttonText": "Java Script",
+          "nextButton": 4
+        }
+      ]
+    },
+    {
+      "question": "Was halten sie von Objektorientierung?",
+      "buttonTextNextArray": [
+        {
+          "buttonText": "Nicht viel",
+          "nextButton": 5
+        },
+        {
+          "buttonText": "Viel",
+          "nextButton": 6
+        }
+      ]
+    },
+    {
+      "question": "Sehr sch\u00F6n! Viel Erfolg dabei!",
+      "buttonTextNextArray": [
+        {
+          "buttonText": "Nochmal machen",
+          "nextButton": 0
+        }
+      ]
+    },
+    {
+      "question": "Sehr sch\u00F6n, meine auch!",
+      "buttonTextNextArray": [
+        {
+          "buttonText": "Nochmal machen",
+          "nextButton": 0
+        }
+      ]
+    },
+    {
+      "question": "Java Script ist ja auch eine einfache Sprache.",
+      "buttonTextNextArray": [
+        {
+          "buttonText": "Stimmt!",
+          "nextButton": 4
+        }
+      ]
+    },
+    {
+      "question": "Vielleicht m\u00F6gen Sie ja Html.",
+      "buttonTextNextArray": [
+        {
+          "buttonText": "Nochmal machen",
+          "nextButton": 0
+        }
+      ]
+    },
+    {
+      "question": "Dann sind Sie bei C\u002B\u002B richtig!",
+      "buttonTextNextArray": [
+        {
+          "buttonText": "Nochmal machen",
+          "nextButton": 0
+        }
+      ]
+    }
+  ]
+}

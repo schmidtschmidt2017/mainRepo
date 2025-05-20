@@ -1,0 +1,114 @@
+﻿@page "/BefragungBearbeiten"
+@using static Befragung1.Components.Pages.Befragung
+@inject SaveLoadServices saveLoadServices
+
+<h3>Editor für Befragung</h3>
+
+@if (PageArray == null)
+{
+    <p>Lade Daten...</p>
+}
+else
+{
+    <div>
+        @for (int i = 0; i < PageArray.Length; i++)
+        {
+            int itemp = i;
+            <div class="p-2 border mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5>Seite @itemp</h5>
+                    <button class="btn btn-sm btn-danger" @onclick="@(() => DeletePage(itemp))">🗑️ Seite löschen</button>
+                </div>
+
+                <input class="form-control mb-1" @bind="PageArray[itemp].question" placeholder="Frage" />
+
+                <h6>Buttons:</h6>
+                @for (int j = 0; j < (PageArray[itemp].ButtonTextNextArray?.Length ?? 0); j++)
+                {
+                    int jtemp = j;
+                    <div class="input-group mb-1">
+                        <input class="form-control" @bind="PageArray[itemp].ButtonTextNextArray[jtemp].ButtonText" placeholder="Button Text" />
+                        <input class="form-control" type="number" @bind="PageArray[itemp].ButtonTextNextArray[jtemp].NextButton" placeholder="Next Button Index" />
+                        <button class="btn btn-outline-danger" @onclick="@(() => DeleteButton(itemp, jtemp))">🗑️</button>
+                    </div>
+                }
+
+                <button class="btn btn-sm btn-secondary mb-2" @onclick="@(() => AddButton(itemp))">+ Button hinzufügen</button>
+            </div>
+        }
+
+        <button class="btn btn-primary" @onclick="AddPage">+ Neue Seite hinzufügen</button>
+        <button class="btn btn-success ms-2" @onclick="Save">💾 Speichern</button>
+        <br /><br />
+    </div>
+}
+
+@code {
+    private UIPage[] PageArray;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Laden der Daten
+        PageArray = await saveLoadServices.LoadUIPageAsync();
+
+        // Null-Einträge rausfiltern (zur Sicherheit)
+        PageArray = PageArray?.Where(p => p != null).ToArray() ?? Array.Empty<UIPage>();
+
+        // Sicherstellen, dass ButtonTextNextArray initialisiert ist
+        foreach (var page in PageArray)
+        {
+            page.ButtonTextNextArray ??= Array.Empty<ButtonTextNext>();
+        }
+    }
+
+    private async Task Save()
+    {
+        await saveLoadServices.SaveUIPageAsync(PageArray);
+    }
+
+    private void AddPage()
+    {
+        var list = PageArray.ToList();
+        list.Add(new UIPage
+            {
+                question = "",
+                ButtonTextNextArray = Array.Empty<ButtonTextNext>()
+            });
+        PageArray = list.ToArray();
+    }
+
+    private void AddButton(int pageIndex)
+    {
+        if (pageIndex < 0 || pageIndex >= PageArray.Length)
+            return;
+
+        var buttonArray = PageArray[pageIndex].ButtonTextNextArray ?? Array.Empty<ButtonTextNext>();
+        var list = buttonArray.ToList();
+        list.Add(new ButtonTextNext { ButtonText = "", NextButton = 0 });
+        PageArray[pageIndex].ButtonTextNextArray = list.ToArray();
+    }
+
+    private void DeletePage(int pageIndex)
+    {
+        if (pageIndex < 0 || pageIndex >= PageArray.Length)
+            return;
+
+        var list = PageArray.ToList();
+        list.RemoveAt(pageIndex);
+        PageArray = list.ToArray();
+    }
+
+    private void DeleteButton(int pageIndex, int buttonIndex)
+    {
+        if (pageIndex < 0 || pageIndex >= PageArray.Length)
+            return;
+
+        var buttonArray = PageArray[pageIndex].ButtonTextNextArray ?? Array.Empty<ButtonTextNext>();
+        if (buttonIndex < 0 || buttonIndex >= buttonArray.Length)
+            return;
+
+        var list = buttonArray.ToList();
+        list.RemoveAt(buttonIndex);
+        PageArray[pageIndex].ButtonTextNextArray = list.ToArray();
+    }
+}

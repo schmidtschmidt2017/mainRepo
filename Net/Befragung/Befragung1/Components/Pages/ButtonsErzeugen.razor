@@ -1,0 +1,70 @@
+﻿@page "/ButtonsErzeugen"
+
+<PageTitle>Button Creator</PageTitle>
+
+<style>
+    .button-style {
+        margin: 5px;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    /* Stil für die große Zahl */
+    .big-number {
+        font-size: 260px; /* Noch größer */
+        font-weight: bold;
+        color: darkblue;
+        margin-top: 0px;
+        text-align: center;
+        position: page;
+       
+    }
+
+    /* Stil für die Seite */
+    .content {
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+
+<h3>Gib eine Zahl zwischen 1 und 8 ein:</h3>
+
+<div class="content">
+    <input type="number" @bind="inputValue" min="1" max="8" />
+    <button @onclick="UpdateButtons">Bestätigen</button>
+
+    @if (buttonCount > 0)
+    {
+        <h4>Buttons:</h4>
+        @foreach (var number in Enumerable.Range(1, buttonCount))
+        {
+            <button class="button-style" @onclick="() => ShowNumber(number)">Button @number</button>
+
+        }
+    }
+    <br /><br />
+    @if (selectedNumber > 0)
+    {
+        <h1 class="big-number">@selectedNumber</h1>
+    }
+</div>
+
+@code {
+    private int inputValue = 1;
+    private int buttonCount = 0;
+    private int selectedNumber = 0;
+
+    private void UpdateButtons()
+    {
+        if (inputValue >= 1 && inputValue <= 8)
+        {
+            buttonCount = inputValue;
+            selectedNumber = 0; // Reset, damit die alte Zahl nicht bleibt
+        }
+    }
+
+    private void ShowNumber(int number)
+    {
+        selectedNumber = number;
+    }
+}
